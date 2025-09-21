@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: transparent;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            padding: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="iframe-container" id="container">
+            <img id="imageFrame" src="" alt="Image">
+        </div>
+    </div>
+
+    <script>
+        // Get URL from query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('url');
+
+        if (imageUrl) {
+            document.getElementById('imageFrame').src = imageUrl;
+        } else {
+            document.getElementById('container').innerHTML = '<div class="error">No image URL provided. Use ?url=<your-image-url></div>';
+        }
+    </script>
+</body>
+
+</html>
