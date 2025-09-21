@@ -30,12 +30,16 @@
             background: transparent;
         }
 
-        img {
+        img, video {
             max-width: 100%;
             max-height: 100%;
             width: auto;
             height: auto;
             object-fit: contain;
+        }
+
+        video {
+            background: black;
         }
 
         .error {
@@ -49,19 +53,39 @@
 <body>
     <div class="container">
         <div class="iframe-container" id="container">
-            <img id="imageFrame" src="" alt="Image">
+            <img id="mediaFrame" src="" alt="Media" style="display: none;">
+            <video id="videoFrame" controls style="display: none;">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </div>
 
     <script>
         // Get URL from query parameter
         const urlParams = new URLSearchParams(window.location.search);
-        const imageUrl = urlParams.get('url');
+        const mediaUrl = urlParams.get('url');
 
-        if (imageUrl) {
-            document.getElementById('imageFrame').src = imageUrl;
+        if (mediaUrl) {
+            // Get file extension to determine if it's a video
+            const fileExtension = mediaUrl.split('.').pop().toLowerCase();
+            const videoExtensions = ['mp4', 'webm', 'ogg', 'avi', 'mov', 'wmv', 'flv', 'mkv'];
+            
+            const imageFrame = document.getElementById('mediaFrame');
+            const videoFrame = document.getElementById('videoFrame');
+            
+            if (videoExtensions.includes(fileExtension)) {
+                // It's a video
+                videoFrame.src = mediaUrl;
+                videoFrame.style.display = 'block';
+                imageFrame.style.display = 'none';
+            } else {
+                // It's an image
+                imageFrame.src = mediaUrl;
+                imageFrame.style.display = 'block';
+                videoFrame.style.display = 'none';
+            }
         } else {
-            document.getElementById('container').innerHTML = '<div class="error">No image URL provided. Use ?url=<your-image-url></div>';
+            document.getElementById('container').innerHTML = '<div class="error">No media URL provided. Use ?url=<your-media-url></div>';
         }
     </script>
 </body>
